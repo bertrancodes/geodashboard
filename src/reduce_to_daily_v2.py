@@ -164,7 +164,7 @@ def add_temp_vars_vect(
 
 def process_file(
     hourly_file: str | Path, sunrise_sunset_file: str | Path, out_dir: Path
-):
+) -> None:
     out_file = out_dir / (hourly_file.stem + "_DA.nc")
 
     if out_file.exists():
