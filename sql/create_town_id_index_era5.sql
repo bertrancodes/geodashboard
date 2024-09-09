@@ -1,0 +1,1 @@
+CREATE INDEX idx_town_id_era5 ON era5_measurements(town_id);
