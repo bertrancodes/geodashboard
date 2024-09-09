@@ -1,1 +1,0 @@
-CREATE INDEX idx_town_id ON measurements(town_id);
