@@ -24,7 +24,7 @@ def calculate_sun_times(
     longitude: float,
     start_year: int,
     end_year: int,
-) -> list[float]:
+) -> tuple[float, float]:
     """
     Compute sunrise and sunset in seconds since midnight for January 1st for a
     range of years
@@ -45,7 +45,7 @@ def calculate_sun_times(
 
 def plot_sun_times(
     cities: list, start_year: int = 1950, end_year: int = 2025
-) -> list[plt.Figure, plt.Axes]:
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Plot sunrise and sunset anomalies for a set of cities between a range of
     years
