@@ -12,7 +12,7 @@ from definitions import DATA_PATH
 
 
 def calculate_sun_times(latitude: float, longitude: float, date: str) -> list[str, str]:
-    # Calcula el alba y la puesta del Sol
+    """Calculate sunrise and sunset for a given latitude, longitude, and date"""
 
     city = LocationInfo(
         timezone="Europe/London", latitude=latitude, longitude=longitude
@@ -33,8 +33,9 @@ def main(
     start_date: str,
     end_date: str,
 ) -> xr.Dataset:
-    # Create an XArray Dataset with EPSG:4326 containing the sunrise and sunset
-    # hours for each pixel across all the days for the year 2020
+    """Create an xarrat.Dataset with EPSG:4326 containing the sunrise and sunset
+    hours for each pixel across all the days for the year 2020. We arbitrary use
+    2020 as is a leap year and thus it has all possible DOYs that a year may have"""
     lats = np.linspace(lat_north, lat_south, nrows)
     lons = np.linspace(lon_west, lon_east, ncols)
     dates = pd.date_range(start=start_date, end=end_date, freq="D")
@@ -47,7 +48,7 @@ def main(
     with Pool() as pool:
         results = pool.starmap(calculate_sun_times, input_args)
 
-    # Reshape results back into the desired shape (time, lat, lon)
+    # Reshape results back into shape (time, lat, lon)
     sunrise = (
         np.array([r[0] for r in results])
         .reshape((len(dates), nrows, ncols))
@@ -68,14 +69,13 @@ def main(
             "sunset": (["time", "latitude", "longitude"], sunset),
         },
         coords={
-            "time": time,  # Coordinate for time
-            "latitude": lats,  # Coordinate for latitude
-            "longitude": lons,  # Coordinate for longitude
+            "time": time,
+            "latitude": lats,
+            "longitude": lons,
         },
     )
 
-    # time_units = "days since 2020-01-01"
-    # ds.time.encoding["units"] = time_units
+    # Add xarray.Dataset metadata
     ds.coords["time"].attrs["description"] = (
         "Day of year, ranging from 1 to 365 (or 366 for leap years)"
     )
