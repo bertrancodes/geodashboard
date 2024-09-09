@@ -23,12 +23,14 @@ logging.basicConfig(
 
 
 def hourly_to_daily(hourly_dataset: xr.Dataset) -> xr.Dataset:
-    # Daily sum for 'total precipitation'
+    """
+    Aggregate ERA5 hourly data to daily
+    """
     logging.debug("Agregating daily data...")
-    ds_daily_tp = hourly_dataset["tp"].resample(time="1D").sum()
 
     # Daily mean for 't2m', 'lai_hv', and 'lai_lv'. Additional min and max
     # for 't2m'
+    ds_daily_tp = hourly_dataset["tp"].resample(time="1D").sum()
     ds_daily_t2m = hourly_dataset["t2m"].resample(time="1D").mean()
     ds_daily_t2m_min = hourly_dataset["t2m"].resample(time="1D").min()
     ds_daily_t2m_max = hourly_dataset["t2m"].resample(time="1D").max()
@@ -66,6 +68,9 @@ def add_temp_vars_vect(
     daily_dataset: xr.Dataset,
     sunrise_sunset_dataset: xr.Dataset,
 ) -> xr.Dataset:
+    """
+    Compute temperature-related variables
+    """
     # Initialize new variables in daily_dataset with NaNs
     logging.debug("Intializing variables...")
     daily_dataset["diurnal_temp_variation"] = xr.full_like(
@@ -90,7 +95,7 @@ def add_temp_vars_vect(
         doy = day.dt.dayofyear.item()
 
         logging.debug(f"Leap year = {is_leap_year}")
-        if not is_leap_year and doy >= 60:  # Skip 29th Feburary for non leap years
+        if not is_leap_year and doy >= 60:  # Skip Feburary 29th for non leap years
             logging.debug("Skipping February 29th")
             doy = doy + 1
 
@@ -165,6 +170,10 @@ def add_temp_vars_vect(
 def process_file(
     hourly_file: str | Path, sunrise_sunset_file: str | Path, out_dir: Path
 ) -> None:
+    """
+    Create an xarray.Dataset that has daily ERA5 data and additional temperature
+    variables and save it to a NetCDF
+    """
     out_file = out_dir / (hourly_file.stem + "_DA.nc")
 
     if out_file.exists():
@@ -179,6 +188,10 @@ def process_file(
 
 
 def main(hourly_file: str | Path, sunrise_sunset_file: str | Path) -> xr.Dataset:
+    """
+    Create an xarray.Dataset that has daily ERA5 data and additional temperature
+    variables
+    """
     hourly_dataset = xr.open_dataset(hourly_file)
     sunrise_sunset_dataset = xr.open_dataset(sunrise_sunset_file)
 
@@ -204,9 +217,9 @@ if __name__ == "__main__":
     out_dir = DATA_PATH / "ERA5D-Land"
     out_dir.mkdir(exist_ok=True)
 
-    # Prepare the arguments as a list of tuples
+    # Prepare args for starmap as tuples
     args = [(hourly_file, sunrise_sunset_file, out_dir) for hourly_file in hourly_files]
 
-    # Use multiprocessing to process files in parallel with starmap
+    # Multiprocess the files
     with Pool() as pool:
         pool.starmap(process_file, args)
