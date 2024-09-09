@@ -1,3 +1,4 @@
+from pathlib import Path
 from zipfile import ZipFile
 
 from tqdm import tqdm
@@ -5,8 +6,8 @@ from tqdm import tqdm
 from definitions import DATA_PATH
 
 
-def main(file):
-    # Extrae y renombra los archivos de los zip de ERA5
+def main(file: str | Path) -> None:
+    """Extract and rename ERA5-Land zip files"""
     out_dir = DATA_PATH / "ERA5-Land"
     with ZipFile(file=file, mode="r") as f:
         compressed_name = f.namelist()[0]
