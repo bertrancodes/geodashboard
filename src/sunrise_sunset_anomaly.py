@@ -8,9 +8,8 @@ from astral.sun import sun
 from definitions import IMG_PATH
 
 
-def time_to_seconds(time):
-    # Convierte una fecha en formato datetime.time a segundos que han pasado desde
-    # la medianoche
+def time_to_seconds(time: date) -> float:
+    """Cast a date to seconds since midnight"""
     total_seconds = (
         (time.hour * 60 + time.minute) * 60 + time.second + time.microsecond / 10e6
     )
@@ -18,10 +17,18 @@ def time_to_seconds(time):
 
 
 def calculate_sun_times(
-    city_name, country, timezone, latitude, longitude, start_year, end_year
-):
-    # Calcula el alba y la puesta del Sol en segundos desde la medianoche
-    # para el 1 de enero
+    city_name: str,
+    country: str,
+    timezone: str,
+    latitude: float,
+    longitude: float,
+    start_year: int,
+    end_year: int,
+) -> list[float]:
+    """
+    Compute sunrise and sunset in seconds since midnight for January 1st for a
+    range of years
+    """
     city = LocationInfo(city_name, country, timezone, latitude, longitude)
     years = range(start_year, end_year + 1)
 
@@ -36,8 +43,13 @@ def calculate_sun_times(
     return sunrise_seconds, sunset_seconds
 
 
-def plot_sun_times(cities, start_year=1950, end_year=2025):
-    # Grafica las anomalías para el alba y la puesta de Sol
+def plot_sun_times(
+    cities: list, start_year: int = 1950, end_year: int = 2025
+) -> list[plt.Figure, plt.Axes]:
+    """
+    Plot sunrise and sunset anomalies for a set of cities between a range of
+    years
+    """
     sunrises = []
     sunsets = []
     labels = []
@@ -72,17 +84,17 @@ def plot_sun_times(cities, start_year=1950, end_year=2025):
     return fig, axs
 
 
-# Usamos ciudades de todo el territorio para tener una buena
-# muestra a nivel geospacial
-cities = [
-    ("València", "España", "Europa/Berlín", 39.47391, -0.37966),
-    ("Barcelona", "España", "Europe/Berlín", 41.38879, 2.15899),
-    ("Madrid", "España", "Europa/Berlín", 40.4165, -3.70256),
-    ("Bilbao", "España", "Europa/Berlín", 43.262985, -2.935013),
-    ("Sevilla", "España", "Europa/Berlín", 37.3833, -5.9833),
-    ("Cáceres", "España", "Europa/Berlín", 39.4731, -6.3711),
-    ("Santiago de Compostela", "España", "Europa/Berlín", 42.88, -8.53),
-]
+if __name__ == "__main__":
+    # Use cities from all the country to have a good geospatial range
+    cities = [
+        ("València", "España", "Europa/Berlín", 39.47391, -0.37966),
+        ("Barcelona", "España", "Europe/Berlín", 41.38879, 2.15899),
+        ("Madrid", "España", "Europa/Berlín", 40.4165, -3.70256),
+        ("Bilbao", "España", "Europa/Berlín", 43.262985, -2.935013),
+        ("Sevilla", "España", "Europa/Berlín", 37.3833, -5.9833),
+        ("Cáceres", "España", "Europa/Berlín", 39.4731, -6.3711),
+        ("Santiago de Compostela", "España", "Europa/Berlín", 42.88, -8.53),
+    ]
 
-fig, _ = plot_sun_times(cities, start_year=1950, end_year=2025)
-fig.savefig(IMG_PATH / "sunrise_sunset_anomaly.png", dpi=300)
+    fig, _ = plot_sun_times(cities, start_year=1950, end_year=2025)
+    fig.savefig(IMG_PATH / "sunrise_sunset_anomaly.png", dpi=300)
