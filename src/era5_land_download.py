@@ -1,6 +1,8 @@
 import cdsapi
+
 from definitions import DATA_PATH
 
+# NOTE: this API will be obsolete by end of September
 c = cdsapi.Client()
 
 for year in range(1950, 2025):
