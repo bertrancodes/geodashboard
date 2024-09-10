@@ -1,0 +1,1 @@
+CREATE INDEX idx_towns_geometry ON towns USING GIST (geometry);

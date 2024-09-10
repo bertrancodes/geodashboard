@@ -35,5 +35,23 @@ def main() -> None:
     connection.close()
 
 
+def create_index() -> None:
+    """
+    Connect to the database, create the 'towns' table and insert data into it
+    """
+    engine = create_engine(
+        f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+
+    connection = engine.connect()
+
+    create_towns_spatial_idx = read_sql_query("create_towns_spatial_index.sql")
+
+    # Execute the SQL query
+    connection.execute(text(create_towns_spatial_idx))
+    connection.commit()
+    connection.close()
+
+
 if __name__ == "__main__":
     main()
