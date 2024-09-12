@@ -24,8 +24,8 @@ engine = create_engine(
 
 
 def fetch_available_ndvi_dates():
-    fetch_statement = read_sql_query("fetch_ndvi_dates.sql")
-    ndvi_dates = pd.read_sql(sql=text(fetch_statement), con=engine)
+    fetch_ndvi_dates = read_sql_query("fetch_ndvi_dates.sql")
+    ndvi_dates = pd.read_sql(sql=text(fetch_ndvi_dates), con=engine)
     return pd.to_datetime(ndvi_dates["date"]).sort_values()
 
 

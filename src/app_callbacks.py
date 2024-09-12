@@ -2,7 +2,7 @@ from datetime import date
 
 import pandas as pd
 import plotly.express as px
-from dash import Input, Output  # , callback
+from dash import Input, Output
 
 from app_data_fetcher import fetch_available_ndvi_dates, query_measurements
 
