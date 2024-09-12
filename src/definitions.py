@@ -8,6 +8,7 @@ DATA_PATH = ROOT_DIR / "data"
 LOG_PATH = ROOT_DIR / "log"
 IMG_PATH = ROOT_DIR / "images"
 SQL_PATH = ROOT_DIR / "sql"
+ASSETS_PATH = ROOT_DIR / "assets"
 
 # DATABASE PARAMS
 DB_USER = os.getenv("POSTGRES_USER")
