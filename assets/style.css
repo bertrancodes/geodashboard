@@ -5,7 +5,7 @@ body {
 }
 
 .header {
-    background-color: #222222;
+    background-color: #034353;
     height: 288px;
     padding: 16px 0 0 0;
 }
@@ -73,5 +73,5 @@ body {
 .menu-title {
     margin-bottom: 6px;
     font-weight: bold;
-    color: #079A82;
+    color: #2e74a3;
 }

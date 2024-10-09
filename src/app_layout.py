@@ -68,5 +68,41 @@ layout = html.Div(
             ],
             fullscreen=False,
         ),
+        # Data sources
+        html.Div(
+            children=[
+                html.P(
+                    children=[
+                        "Data sources: ",
+                        html.A(
+                            "Instituto Geográfico Nacional",
+                            href="https://www.ign.es/web/ign/portal",
+                            target="_blank",
+                            style={"color": "#1e90ff", "text-decoration": "none"},
+                        ),
+                        ", ",
+                        html.A(
+                            "ERA5-Land",
+                            href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=overview",
+                            target="_blank",
+                            style={"color": "#1e90ff", "text-decoration": "none"},
+                        ),
+                        ", ",
+                        html.A(
+                            "MODIS-Terra",
+                            href="https://lpdaac.usgs.gov/products/mod13q1v006/",
+                            target="_blank",
+                            style={"color": "#1e90ff", "text-decoration": "none"},
+                        ),
+                    ],
+                    style={
+                        "textAlign": "center",
+                        "paddingTop": "20px",
+                        "fontSize": "16px",
+                    },
+                ),
+            ],
+            className="data-sources",
+        ),
     ]
 )

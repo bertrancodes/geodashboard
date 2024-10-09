@@ -55,3 +55,4 @@ def create_index() -> None:
 
 if __name__ == "__main__":
     main()
+    create_index()

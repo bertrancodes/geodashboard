@@ -31,16 +31,22 @@ def register_callbacks(app):
         if variable in temperatures:
             units = "Temperature (K)"
             cmap = "RdBu_r"
+            lowers = -5
+            uppers = 5
         elif variable == precipitation:
             units = "Total precipitation (mm)"
             cmap = "RdBu"
+            lowers = -50
+            uppers = 50
         else:
             units = "NDVI"
             cmap = "RdYlGn"
+            lowers = 0.2
+            uppers = 0.8
 
         gdf = query_measurements(variable=variable, date=date)
-        lowers = gdf[variable].quantile(0.02)
-        uppers = gdf[variable].quantile(0.98)
+        # lowers = gdf[variable].quantile(0.02)
+        # uppers = gdf[variable].quantile(0.98)
         fig = px.choropleth_map(
             gdf,
             geojson=gdf.geometry,
